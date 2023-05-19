@@ -38,7 +38,7 @@ const posts = [
         "media": "https://unsplash.it/600/400?image=24",
         "author": {
             "name": "Luca Formicola",
-            "image": null
+            "image": null,
         },
         "likes": 56,
         "created": "2021-04-03"
@@ -58,20 +58,21 @@ const posts = [
 
 
 
+
+
 const containerSelection = document.getElementById("container");
 console.log(containerSelection);
 
 for (let i = 0; i < posts.length; i++) {
-    let objectiesimo = posts[i];
+    let post = posts[i];
     
-   const id = objectiesimo.id;
-   const content = objectiesimo.content;
-   const authorname = objectiesimo.author.name;
-   const authorimg = objectiesimo.author.image;
-   const likes = objectiesimo.likes;
-   const created = objectiesimo.created;
+   const id = post.id;
+   const content = post.content;
+   const authorname = post.author.name;
+   const authorimg = post.author.image;
+   let likes = post.likes;
+   const created = new Date(post.created).toLocaleDateString();
 
-   console.log(id, content, authorname,  authorimg, likes, created);
 
    const cardElement = `<div class="post">
                             <div class="post__header">
@@ -98,11 +99,43 @@ for (let i = 0; i < posts.length; i++) {
                                         </a>
                                     </div>
                                     <div class="likes__counter">
-                                        Piace a <b id="like-counter-1" class="js-likes-counter">${likes}</b> persone
+                                        Piace a <b class ="like-counter-1" class="js-likes-counter">${likes}</b> persone
                                     </div>
                                 </div> 
                             </div>            
                         </div>`
 
     containerSelection.innerHTML += cardElement;
+   
 }
+
+const counters = document.querySelectorAll(".like-counter-1");
+const buttomLikesSelection = document.querySelectorAll(".like-button");
+
+
+buttomLikesSelection.forEach((elementbuttom, index) => {
+    elementbuttom.addEventListener("click", 
+    function (event) {
+        event.preventDefault() 
+
+        let countersElement = counters[index];
+        let countersValue = parseInt(countersElement.innerHTML);
+
+        if (!elementbuttom.classList.contains("like-button--liked")) {
+            elementbuttom.classList.add("like-button--liked");
+            countersValue ++
+            countersElement.innerHTML = countersValue;
+        }
+
+        else{
+            elementbuttom.classList.remove("like-button--liked");
+            countersValue -= 1;
+            countersElement.innerHTML = countersValue;
+        }
+
+
+    }
+    )
+});
+
+
